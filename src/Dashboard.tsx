@@ -46,7 +46,7 @@ function Dashboard()    {
            //         headers: {
         //                'Authorization': `Bearer ${localStorage.getItem('token')}`        // buscar musicas recentes. Codigo funcional mas não está sendo utilizado
             //        }
-            //    })
+            //    })       
             //        .then(res => res.json())
             //        .then(data => {
              //           console.log(data)

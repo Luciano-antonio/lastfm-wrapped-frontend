@@ -1,5 +1,4 @@
 import {useState, useEffect } from 'react'
-import TrackCard from "./TrackCard"
 import { useNavigate } from "react-router-dom"
 function Dashboard()    {
     const navigate = useNavigate()
@@ -41,18 +40,16 @@ function Dashboard()    {
         }, [])
 
                                                                                 // busca musicas recentes
-         //   useEffect(() => {
-          //      fetch('http://127.0.0.1:3000/recently-played', {
-           //         headers: {
-        //                'Authorization': `Bearer ${localStorage.getItem('token')}`        // buscar musicas recentes. Codigo funcional mas não está sendo utilizado
-            //        }
-            //    })       
-            //        .then(res => res.json())
-            //        .then(data => {
-             //           console.log(data)
-            //            setRecently(Array.isArray(data) ? data: [])
-           //         })
-          //  }, [])
+            useEffect(() => {
+                fetch('http://127.0.0.1:3000/recently-played', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`        // buscar musicas recentes. Codigo funcional mas não está sendo utilizado
+                    }
+                })       
+                    .then(res => res.json())
+                    .then(data => { setRecently(Array.isArray(data) ? data: [])
+                    })
+            }, [])
 
     return (
         <div className="min-h-screen bg-[#0a0a0a]">    
@@ -80,11 +77,9 @@ function Dashboard()    {
             <section onClick={() => navigate('/recently-played')} className="... cursor-pointer mb-8">
                 <h2 className="text-xl font-semibold mb-3">Tocadas Recentemente</h2>
                    <div className="flex gap-4">
-                    <img src="https://via.placeholder.com/80" className="w-24 h-24 rounded-lg object-cover" />
-                      <img src="https://via.placeholder.com/80" className="w-24 h-24 rounded-lg object-cover" />
-                       <img src="https://via.placeholder.com/80" className="w-24 h-24 rounded-lg object-cover" />
-                        <img src="https://via.placeholder.com/80" className="w-24 h-24 rounded-lg object-cover" />
-                         <img src="https://via.placeholder.com/80" className="w-24 h-24 rounded-lg object-cover" />
+                    {recently.slice(0,5).map((recently: any) => (
+                        <img key={recently.ranking} src={recently.recentlyImages || 'https://placehold.co/96'} className="w-24 h-24 rounded-lg object-cover" />
+                    ))}
                     </div>
             </section>
             </div>

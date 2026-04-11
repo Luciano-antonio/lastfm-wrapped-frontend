@@ -5,7 +5,7 @@ function TopTracks() {
     const [ musicas, setMusicas ] = useState<any[]>([])
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/top-tracks', {
+        fetch(`${import.meta.env.VITE_API_URL}/top-tracks`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }

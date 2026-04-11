@@ -5,7 +5,7 @@ function RencentlyPlayed() {
     const [ recentes, setRecentes ] = useState<any[]>([])
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/Recently-Played', {
+        fetch(`${import.meta.env.VITE_API_URL}/recently-played`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }

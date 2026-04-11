@@ -5,7 +5,7 @@ function TopArtists() {
     const [ artistas, setArtistas ] = useState<any[]>([])
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/top-artists', {
+        fetch(`${import.meta.env.VITE_API_URL}/top-artists`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }

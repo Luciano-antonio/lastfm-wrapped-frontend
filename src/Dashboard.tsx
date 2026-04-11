@@ -17,7 +17,7 @@ function Dashboard()    {
     
     
      useEffect(() => {                                                                             // useEffects e fetchs
-            fetch('http://127.0.0.1:3000/top-tracks', {   
+            fetch(`${import.meta.env.VITE_API_URL}/top-tracks`, {   
                 headers: {                                                                         // Busca Top Tracks
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -29,7 +29,7 @@ function Dashboard()    {
         // Busca top artitas
 
         useEffect(() => {
-            fetch('http://127.0.0.1:3000/top-artists', {
+            fetch(`${import.meta.env.VITE_API_URL}/top-artists`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -41,7 +41,7 @@ function Dashboard()    {
 
                                                                                 // busca musicas recentes
             useEffect(() => {
-                fetch('http://127.0.0.1:3000/recently-played', {
+                fetch(`${import.meta.env.VITE_API_URL}/recently-played`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`        // buscar musicas recentes. Codigo funcional mas não está sendo utilizado
                     }

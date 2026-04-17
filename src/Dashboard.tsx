@@ -1,11 +1,13 @@
 import {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
+import type { TrackMontado, ArtistsAPI, RecentlyFormatado } from './types'
+
 function Dashboard()    {
     const navigate = useNavigate()
 
-    const [tracks, setTracks ] = useState<any[]>([])                //  useStates
-    const [artists, setArtists ] = useState<any[]>([])
-    const [recently, setRecently ] = useState<any[]>([])
+    const [tracks, setTracks ] = useState<TrackMontado[]>([])                //  useStates
+    const [artists, setArtists ] = useState<ArtistsAPI[]>([])
+    const [recently, setRecently ] = useState<RecentlyFormatado[]>([])
 
 
     const params = new URLSearchParams(window.location.search)
@@ -70,22 +72,22 @@ function Dashboard()    {
                 {tracks.length === 0 ? (
                     <div className="flex gap-4">
                         {Array.from({length: 5}).map((_, index) => (
-                            <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-puls" />
+                            <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-pulse" />
                         ))}
                     </div>
                 ) : (
                     <div className="flex gap-4 overflow-visible">
-                    {tracks.slice(0, 5).map((track: any) => (
-                        <div key={track.imagem} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
-                            <img src={track.imagem || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
-                            <div className="absolute buttom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {tracks.slice(0, 5).map((track: TrackMontado) => (
+                            <div key={track.imagem} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
+                                <img src={track.imagem || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
+                            <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{track.name}</p>
                                 <p className="text-white text-xs truncate">{track.artista}</p>
                                 
                             </div>
                          </div>
                     ))}
-                </div>
+                    </div>
                 )}
                 
             </section>
@@ -96,18 +98,17 @@ function Dashboard()    {
                     {artists.length === 0 ? (
                         <div className="flex gap-4">
                             {Array.from({length: 5}).map((_, index) => (
-                                <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-puls" />
+                                <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-pulse" />
                             ))}
                         </div>
                     ) : (
 
                         <div className="flex gap-4 overflow-visible"> 
-                        {artists.slice(0,5).map((artists: any) => (
+                        {artists.slice(0,5).map((artists: ArtistsAPI) => (
                             <div key={artists.imagemArtists} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
                             <img src={artists.imagemArtists || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
-                            <div className="absolute buttom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{artists.name}</p>
-                                <p className="text-white text-xs truncate">{artists.artista}</p>
                                 
                             </div>
                          </div>
@@ -130,13 +131,13 @@ function Dashboard()    {
                    ) : (
                         
                         <div className="flex gap-4 overflow-visible">
-                    {recently.slice(0,5).map((recently: any) => (
+                    {recently.slice(0,5).map((recently: RecentlyFormatado) => (
                         <div key={recently.recentlyImages} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
                             <img src={recently.recentlyImages || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
-                            <div className="absolute buttom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{recently.name}</p>
                                 <p className="text-white text-xs truncate">{recently.artista}</p>
-                                
+
                             </div>
                          </div>
                     ))}

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
+import type { ArtistsAPI } from "./types"
 
 function TopArtists() {
     
-    const [ artistas, setArtistas ] = useState<any[]>([])
+    const [ artistas, setArtistas ] = useState<ArtistsAPI[]>([])
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_URL}/top-artists`, {
@@ -20,7 +21,7 @@ function TopArtists() {
                 <h1 className='text-white text-center text-4xl mb-6 font-bold'>Top Artistas</h1>
                 <div className="bg-white/5 rounded-xl p-6 py-8">
                     <div className="flex flex-col gap-4 pl-16">
-                        {artistas.map((artistas: any) => (
+                        {artistas.map((artistas: ArtistsAPI) => (
                             <div key={artistas.ranking} className="flex items-center gap-4 border-b border-white/8 py-4">
                                 <p className="text-gray-400 text-xl mr-8 font-bold">{artistas.ranking}</p>
                                 <img src={artistas.imagemArtists || 'https://placehold.co/96'} className="w-[115px] h-[115px] rounded-lg object-cover" />

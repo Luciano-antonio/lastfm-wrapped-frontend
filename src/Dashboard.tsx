@@ -1,4 +1,4 @@
-import {useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import type { TrackMontado, ArtistsAPI, RecentlyFormatado } from './types'
 import useFetch from './useFetch'

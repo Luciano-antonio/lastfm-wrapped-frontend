@@ -1,6 +1,7 @@
 import {useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import type { TrackMontado, ArtistsAPI, RecentlyFormatado } from './types'
+import useFetch from './useFetch'
 
 function Dashboard()    {
     const navigate = useNavigate()
@@ -17,49 +18,11 @@ function Dashboard()    {
         localStorage.setItem('token', token)                // validação de tokens
     }
     
-    
-     useEffect(() => {                                                                             // useEffects e fetchs
-            fetch(`${import.meta.env.VITE_API_URL}/top-tracks`, {   
-                headers: {                                                                         // Busca Top Tracks
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            .then(res => res.json())
-            .then(data => { setTracks(Array.isArray(data) ? data : [])})
-        }, [])
-
-        // Busca top artitas
-
-        useEffect(() => {
-            fetch(`${import.meta.env.VITE_API_URL}/top-artists`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-                .then(res => res.json())
-                .then(data => { setArtists(Array.isArray(data) ? data: [])
-                })
-        }, [])
-
-                                                                                // busca musicas recentes
-            useEffect(() => {
-               const buscar = () => { 
-                fetch(`${import.meta.env.VITE_API_URL}/recently-played`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`        // buscar musicas recentes. Codigo funcional mas não está sendo utilizado
-                    }
-                })       
-                    .then(res => res.json())
-                    .then(data => { setRecently(Array.isArray(data) ? data: [])
-                    })
-
-               }
-                
-               buscar()
-               const intervalo = setInterval(buscar,30000)
-
-               return () => clearInterval(intervalo)
-            }, [])
+    // função generica de fetchs e useEffects. terceiro parametro opcional,
+    // caso queira musica atualizada a cada 30 segundos na tela apenas adicione true.
+    useFetch<TrackMontado>(`${import.meta.env.VITE_API_URL}/top-tracks`, setTracks)
+    useFetch<ArtistsAPI>(`${import.meta.env.VITE_API_URL}/top-artists`, setArtists)
+    useFetch<RecentlyFormatado>(`${import.meta.env.VITE_API_URL}/recently-played`, setRecently, true)
 
     return (
         <div className="min-h-screen bg-[#0f0f13]">    
@@ -70,7 +33,7 @@ function Dashboard()    {
             <section onClick={() => navigate('/top-tracks')} className="... cursor-pointer mb-12 ... fade-in" >
                 <h2 className="text-2xl font-semibold mb-3">Top Musicas</h2>
                 {tracks.length === 0 ? (
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                         {Array.from({length: 5}).map((_, index) => (
                             <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-pulse" />
                         ))}
@@ -79,7 +42,7 @@ function Dashboard()    {
                     <div className="flex gap-4 overflow-visible">
                             {tracks.slice(0, 5).map((track: TrackMontado) => (
                             <div key={track.imagem} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
-                                <img src={track.imagem || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
+                                <img src={track.imagem || 'https://placehold.co/96'} className="w-28 h-28 min-w-28 rounded-lg object-cover" />
                             <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{track.name}</p>
                                 <p className="text-white text-xs truncate">{track.artista}</p>
@@ -96,7 +59,7 @@ function Dashboard()    {
                 <h2 className="text-2xl font-semibold mb-3">Top Artistas</h2>
                     
                     {artists.length === 0 ? (
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                             {Array.from({length: 5}).map((_, index) => (
                                 <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-pulse" />
                             ))}
@@ -106,7 +69,7 @@ function Dashboard()    {
                         <div className="flex gap-4 overflow-visible"> 
                         {artists.slice(0,5).map((artists: ArtistsAPI) => (
                             <div key={artists.imagemArtists} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
-                            <img src={artists.imagemArtists || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
+                            <img src={artists.imagemArtists || 'https://placehold.co/96'} className="w-28 h-28 min-w-28 rounded-lg object-cover" />
                             <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{artists.name}</p>
                                 
@@ -123,7 +86,7 @@ function Dashboard()    {
                 <h2 className="text-2xl font-semibold mb-3">Tocadas Recentemente</h2>
                    
                    {recently.length === 0 ? (
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide ">
                         {Array.from({length: 5}).map((_, index) => (
                             <div key={index} className="w-28 h-28 rounded-lg bg-white/10 animate-plus" />
                         ))}
@@ -133,7 +96,7 @@ function Dashboard()    {
                         <div className="flex gap-4 overflow-visible">
                     {recently.slice(0,5).map((recently: RecentlyFormatado) => (
                         <div key={recently.recentlyImages} className="relative group cursor-pointer hover:scale-110 transition-transform duration-200">
-                            <img src={recently.recentlyImages || 'https://placehold.co/96'} className="w-28 h-28 rounded-lg object-cover" />
+                            <img src={recently.recentlyImages || 'https://placehold.co/96'} className="w-28 h-28 min-w-28 rounded-lg object-cover" />
                             <div className="absolute bottom-0 left-0 right-0 bg-zinc-800/40 rounded-b-lg p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p className="text-white text-xs truncate">{recently.name}</p>
                                 <p className="text-white text-xs truncate">{recently.artista}</p>

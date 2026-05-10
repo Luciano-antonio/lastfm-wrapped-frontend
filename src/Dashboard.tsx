@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import type { TrackMontado, ArtistsAPI, RecentlyFormatado } from './types'
 import useFetch from './useFetch'
@@ -14,9 +14,12 @@ function Dashboard()    {
     const params = new URLSearchParams(window.location.search)
     const token = params.get('token')
     
-    if (token) {
-        localStorage.setItem('token', token)                // validação de tokens
+    useEffect( () => {
+        if (token) {
+            localStorage.setItem('token', token)                // validação de tokens
     }
+    }, [token])
+    
     
     // função generica de fetchs e useEffects. terceiro parametro opcional,
     // caso queira musica atualizada a cada 30 segundos na tela apenas adicione true.
